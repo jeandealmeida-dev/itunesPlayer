@@ -10,4 +10,5 @@ data class Track(
     val trackPrice: Double,
     val currency: String,
     val durationMs: Long,
+    val collectionId: Long = 0L,
 )

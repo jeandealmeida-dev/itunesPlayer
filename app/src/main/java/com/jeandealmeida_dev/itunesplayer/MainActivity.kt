@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.jeandealmeida_dev.itunesplayer.domain.model.Track
+import com.jeandealmeida_dev.itunesplayer.ui.album.AlbumScreen
 import com.jeandealmeida_dev.itunesplayer.ui.home.HomeScreen
 import com.jeandealmeida_dev.itunesplayer.ui.player.PlayerScreen
 import com.jeandealmeida_dev.itunesplayer.ui.splash.SplashScreen
@@ -17,6 +18,7 @@ import com.jeandealmeida_dev.itunesplayer.ui.theme.ItunesPlayerTheme
 private sealed class Screen {
     object Home : Screen()
     data class Player(val track: Track) : Screen()
+    data class Album(val track: Track) : Screen()
 }
 
 class MainActivity : ComponentActivity() {
@@ -45,6 +47,16 @@ class MainActivity : ComponentActivity() {
                         is Screen.Player -> PlayerScreen(
                             track = screen.track,
                             onBack = { backStack = backStack.dropLast(1) },
+                            onAlbumClick = {
+                                backStack = backStack + Screen.Album(screen.track)
+                            },
+                        )
+                        is Screen.Album -> AlbumScreen(
+                            track = screen.track,
+                            onBack = { backStack = backStack.dropLast(1) },
+                            onTrackClick = { newTrack ->
+                                backStack = backStack + Screen.Player(newTrack)
+                            },
                         )
                     }
                 }

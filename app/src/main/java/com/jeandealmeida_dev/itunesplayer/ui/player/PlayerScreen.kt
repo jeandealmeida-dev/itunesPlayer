@@ -61,6 +61,7 @@ import com.jeandealmeida_dev.itunesplayer.ui.theme.TextPlayerArtist
 fun PlayerScreen(
     track: Track,
     onBack: () -> Unit,
+    onAlbumClick: () -> Unit = {},
     viewModel: PlayerViewModel = viewModel(),
 ) {
     LaunchedEffect(track.id) { viewModel.setTrack(track) }
@@ -140,12 +141,14 @@ fun PlayerScreen(
                 color = colors.onBackground,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.clickable(onClick = onAlbumClick),
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = track.artist,
                 style = MaterialTheme.typography.titleMedium,
                 color = TextPlayerArtist,
+                modifier = Modifier.clickable(onClick = onAlbumClick),
             )
             Spacer(modifier = Modifier.height(12.dp))
 

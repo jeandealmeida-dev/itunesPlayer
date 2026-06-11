@@ -25,4 +25,9 @@ class TrackRepositoryImpl(
         config = PagingConfig(pageSize = TrackPagingSource.PAGE_SIZE, enablePlaceholders = false),
         pagingSourceFactory = { TrackPagingSource(service, term) },
     ).flow
+
+    override suspend fun getAlbumTracks(collectionId: Long): List<Track> =
+        service.lookup(collectionId).results
+            .filter { it.id != null }
+            .map { it.toDomain() }
 }

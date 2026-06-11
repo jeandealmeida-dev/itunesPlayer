@@ -5,6 +5,7 @@ import com.squareup.moshi.Json
 
 data class TrackDto(
     @Json(name = "trackId") val id: Long?,
+    @Json(name = "collectionId") val collectionId: Long?,
     @Json(name = "trackName") val title: String?,
     @Json(name = "artistName") val artist: String?,
     @Json(name = "collectionName") val album: String?,
@@ -25,4 +26,5 @@ fun TrackDto.toDomain() = Track(
     trackPrice = trackPrice ?: 0.0,
     currency = currency.orEmpty(),
     durationMs = durationMs ?: 0L,
+    collectionId = collectionId ?: 0L,
 )

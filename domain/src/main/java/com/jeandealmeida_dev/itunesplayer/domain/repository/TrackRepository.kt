@@ -8,4 +8,5 @@ interface TrackRepository {
     suspend fun search(term: String): List<Track>
     suspend fun getTrack(id: Long): Track?
     fun searchPaged(term: String): Flow<PagingData<Track>>
+    suspend fun getAlbumTracks(collectionId: Long): List<Track>
 }
