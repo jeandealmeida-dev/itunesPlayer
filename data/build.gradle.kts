@@ -22,5 +22,9 @@ android {
 
 dependencies {
     implementation(project(":domain"))
-    implementation(libs.androidx.core.ktx)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.moshi)
+    implementation(libs.moshi.kotlin)
+    implementation(libs.moshi.adapters)
+    implementation(libs.kotlinx.coroutines.android)
 }
