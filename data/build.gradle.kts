@@ -27,4 +27,5 @@ dependencies {
     implementation(libs.moshi.kotlin)
     implementation(libs.moshi.adapters)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.paging.runtime)
 }
