@@ -12,6 +12,7 @@ data class TrackDto(
     @Json(name = "previewUrl") val previewUrl: String?,
     @Json(name = "trackPrice") val trackPrice: Double?,
     @Json(name = "currency") val currency: String?,
+    @Json(name = "trackTimeMillis") val durationMs: Long?,
 )
 
 fun TrackDto.toDomain() = Track(
@@ -23,4 +24,5 @@ fun TrackDto.toDomain() = Track(
     previewUrl = previewUrl.orEmpty(),
     trackPrice = trackPrice ?: 0.0,
     currency = currency.orEmpty(),
+    durationMs = durationMs ?: 0L,
 )

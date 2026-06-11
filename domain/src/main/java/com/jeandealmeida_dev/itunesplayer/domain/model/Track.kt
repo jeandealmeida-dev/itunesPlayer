@@ -9,4 +9,5 @@ data class Track(
     val previewUrl: String,
     val trackPrice: Double,
     val currency: String,
+    val durationMs: Long,
 )
