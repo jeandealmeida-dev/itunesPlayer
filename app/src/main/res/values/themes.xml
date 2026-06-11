@@ -1,0 +1,7 @@
+<resources>
+    <style name="Theme.ItunesPlayer" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+
+    <style name="Theme.ItunesPlayer.NoActionBar" parent="Theme.ItunesPlayer" />
+</resources>
