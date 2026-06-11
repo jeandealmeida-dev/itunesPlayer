@@ -12,6 +12,7 @@ retrofit = "3.0.0"
 moshi = "1.15.2"
 kotlinxCoroutines = "1.10.2"
 mockk = "1.14.5"
+paging = "3.3.5"
 coil = "2.7.0"
 
 [libraries]
@@ -39,6 +40,10 @@ mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelKtx" }
 androidx-compose-material-icons = { group = "androidx.compose.material", name = "material-icons-core" }
+paging-common = { group = "androidx.paging", name = "paging-common", version.ref = "paging" }
+paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
+paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging" }
+paging-testing = { group = "androidx.paging", name = "paging-testing", version.ref = "paging" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

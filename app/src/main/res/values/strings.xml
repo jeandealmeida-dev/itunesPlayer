@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">Itunes Player</string>
+
+    <!-- Labels -->
+    <string name="songs">Songs</string>
+    <string name="search">Search</string>
+    <string name="now_playing">Now playing</string>
+
+    <!-- Content descriptions -->
+    <string name="cd_back">Back</string>
+    <string name="cd_search">Search</string>
+    <string name="cd_close_search">Close search</string>
+    <string name="cd_more_options">More options</string>
+    <string name="cd_play">Play</string>
+    <string name="cd_pause">Pause</string>
+    <string name="cd_skip_previous">Skip previous</string>
+    <string name="cd_skip_next">Skip next</string>
+    <string name="cd_repeat">Repeat</string>
 </resources>
