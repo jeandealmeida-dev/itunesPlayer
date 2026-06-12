@@ -43,6 +43,9 @@ class MainActivity : ComponentActivity() {
                             onTrackClick = { track ->
                                 backStack = backStack + Screen.Player(track)
                             },
+                            onViewAlbum = { track ->
+                                backStack = backStack + Screen.Album(track)
+                            },
                         )
                         is Screen.Player -> PlayerScreen(
                             track = screen.track,

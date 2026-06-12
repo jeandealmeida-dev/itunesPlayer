@@ -30,7 +30,8 @@ import com.jeandealmeida_dev.itunesplayer.domain.model.Track
 fun TrackItem(
     track: Track,
     showOptions: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onOptionsClick: () -> Unit = {},
 ) {
     val colors = MaterialTheme.colorScheme
     Row(
@@ -66,7 +67,7 @@ fun TrackItem(
             )
         }
         if (showOptions) {
-            IconButton(onClick = {}) {
+            IconButton(onClick = onOptionsClick) {
                 Icon(
                     imageVector = Icons.Default.MoreVert,
                     contentDescription = null,

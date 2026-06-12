@@ -36,6 +36,9 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -53,6 +56,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.jeandealmeida_dev.itunesplayer.R
 import com.jeandealmeida_dev.itunesplayer.domain.model.Track
+import com.jeandealmeida_dev.itunesplayer.ui.components.TrackActionSheet
 import com.jeandealmeida_dev.itunesplayer.ui.theme.TextCounter
 import com.jeandealmeida_dev.itunesplayer.ui.theme.TextPlayerArtist
 
@@ -69,6 +73,7 @@ fun PlayerScreen(
 
     val uiState by viewModel.uiState.collectAsState()
     val colors = MaterialTheme.colorScheme
+    var showActionSheet by remember { mutableStateOf(false) }
     val duration = uiState.durationMs.coerceAtLeast(1L)
     val progress = (uiState.positionMs.toFloat() / duration).coerceIn(0f, 1f)
 
@@ -93,7 +98,7 @@ fun PlayerScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = { showActionSheet = true }) {
                         Icon(
                             imageVector = Icons.Default.MoreVert,
                             contentDescription = stringResource(R.string.cd_more_options),
@@ -171,6 +176,17 @@ fun PlayerScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
         }
+    }
+
+    if (showActionSheet) {
+        TrackActionSheet(
+            track = track,
+            onViewAlbum = {
+                showActionSheet = false
+                onAlbumClick()
+            },
+            onDismiss = { showActionSheet = false },
+        )
     }
 }
 

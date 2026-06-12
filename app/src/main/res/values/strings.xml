@@ -6,6 +6,9 @@
     <string name="search">Search</string>
     <string name="now_playing">Now playing</string>
 
+    <!-- Actions -->
+    <string name="view_album">View album</string>
+
     <!-- Content descriptions -->
     <string name="cd_back">Back</string>
     <string name="cd_search">Search</string>

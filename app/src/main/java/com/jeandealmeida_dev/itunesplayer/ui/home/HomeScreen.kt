@@ -45,18 +45,21 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.jeandealmeida_dev.itunesplayer.R
 import com.jeandealmeida_dev.itunesplayer.domain.model.Track
+import com.jeandealmeida_dev.itunesplayer.ui.components.TrackActionSheet
 import com.jeandealmeida_dev.itunesplayer.ui.components.TrackItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     onTrackClick: (Track) -> Unit = {},
+    onViewAlbum: (Track) -> Unit = {},
     viewModel: HomeViewModel = viewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val tracks = viewModel.tracks.collectAsLazyPagingItems()
     val colors = MaterialTheme.colorScheme
     var isSearchVisible by remember { mutableStateOf(false) }
+    var selectedTrack by remember { mutableStateOf<Track?>(null) }
 
     Scaffold(
         containerColor = colors.background,
@@ -125,7 +128,8 @@ fun HomeScreen(
                         TrackItem(
                             track = track,
                             showOptions = true,
-                            onClick = { onTrackClick(track) }
+                            onClick = { onTrackClick(track) },
+                            onOptionsClick = { selectedTrack = track },
                         )
                     }
                     if (tracks.loadState.append is LoadState.Loading) {
@@ -143,6 +147,17 @@ fun HomeScreen(
                 }
             }
         }
+    }
+
+    selectedTrack?.let { track ->
+        TrackActionSheet(
+            track = track,
+            onViewAlbum = {
+                selectedTrack = null
+                onViewAlbum(track)
+            },
+            onDismiss = { selectedTrack = null },
+        )
     }
 }
 
