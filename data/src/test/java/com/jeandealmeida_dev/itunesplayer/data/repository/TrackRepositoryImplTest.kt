@@ -81,8 +81,10 @@ private fun aTrackDto(
     trackPrice: Double = 1.29,
     currency: String = "USD",
     durationMs: Long = 240_000L,
+    collectionId: Long = 4213L,
 ) = TrackDto(
     id = id, title = title, artist = artist, album = album,
     artworkUrl = artworkUrl, previewUrl = previewUrl,
     trackPrice = trackPrice, currency = currency, durationMs = durationMs,
+    collectionId = collectionId
 )

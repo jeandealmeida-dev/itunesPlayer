@@ -1,4 +1,4 @@
-package com.jeandealmeida_dev.itunesplayer.domain.usecase
+package com.jeandealmeida_dev.itunesplayer
 
 import com.jeandealmeida_dev.itunesplayer.domain.model.Track
 

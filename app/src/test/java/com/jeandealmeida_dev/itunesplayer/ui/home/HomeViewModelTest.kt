@@ -4,7 +4,11 @@ import com.jeandealmeida_dev.itunesplayer.MainDispatcherRule
 import com.jeandealmeida_dev.itunesplayer.domain.usecase.GetPagedTracksUseCase
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -39,5 +43,18 @@ class HomeViewModelTest {
         viewModel.onQueryChange("a")
         viewModel.onQueryChange("ab")
         assertEquals("ab", viewModel.uiState.value.query)
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `GIVEN blank query WHEN tracks flow is collected THEN Daft Punk is used as the default search term`() = runTest {
+        every { getPagedTracks(any()) } returns emptyFlow()
+        val viewModel = HomeViewModel(getPagedTracks)
+
+        val job = launch { viewModel.tracks.collect {} }
+        advanceUntilIdle()
+        job.cancel()
+
+        verify { getPagedTracks("Daft Punk") }
     }
 }

@@ -11,7 +11,7 @@ class TrackDtoTest {
             id = 1L, title = "Yesterday", artist = "The Beatles",
             album = "Help!", artworkUrl = "https://art.jpg",
             previewUrl = "https://preview.m4a", trackPrice = 1.29,
-            currency = "USD", durationMs = 185_000L,
+            currency = "USD", durationMs = 185_000L, collectionId = 4213L
         )
 
         val track = dto.toDomain()
@@ -29,7 +29,7 @@ class TrackDtoTest {
 
     @Test
     fun `GIVEN dto with all null fields WHEN toDomain is called THEN fallback values are used`() {
-        val dto = TrackDto(null, null, null, null, null, null, null, null, null)
+        val dto = TrackDto(null, null, null, null, null, null, null, null, null, null)
 
         val track = dto.toDomain()
 
@@ -49,7 +49,7 @@ class TrackDtoTest {
         val dto = TrackDto(
             id = 5L, title = "Test", artist = "Artist",
             album = null, artworkUrl = null, previewUrl = null,
-            trackPrice = null, currency = null, durationMs = null,
+            trackPrice = null, currency = null, durationMs = null, collectionId = null,
         )
 
         val track = dto.toDomain()
