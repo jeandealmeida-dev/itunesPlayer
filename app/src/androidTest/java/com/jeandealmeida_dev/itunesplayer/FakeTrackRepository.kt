@@ -38,8 +38,10 @@ fun aTrack(
     trackPrice: Double = 1.29,
     currency: String = "USD",
     durationMs: Long = 185_000L,
+    collectionId: Long = 0L,
 ) = Track(
     id = id, title = title, artist = artist, album = album,
     artworkUrl = artworkUrl, previewUrl = previewUrl,
     trackPrice = trackPrice, currency = currency, durationMs = durationMs,
+    collectionId = collectionId,
 )

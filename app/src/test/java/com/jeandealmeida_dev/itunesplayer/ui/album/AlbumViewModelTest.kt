@@ -63,4 +63,29 @@ class AlbumViewModelTest {
 
         assertEquals(secondBatch, viewModel.uiState.value.tracks)
     }
+
+    @Test
+    fun `GIVEN a valid collectionId WHEN loadAlbum succeeds with empty list THEN tracks is empty and isLoading is false`() = runTest {
+        coEvery { getAlbumTracks(any()) } returns emptyList()
+        val viewModel = AlbumViewModel(getAlbumTracks)
+
+        viewModel.loadAlbum(1L)
+
+        assertTrue(viewModel.uiState.value.tracks.isEmpty())
+        assertFalse(viewModel.uiState.value.isLoading)
+    }
+
+    @Test
+    fun `GIVEN first load succeeds WHEN a subsequent loadAlbum fails THEN previous tracks are preserved`() = runTest {
+        val firstBatch = listOf(aTrack(id = 1L), aTrack(id = 2L))
+        coEvery { getAlbumTracks(1L) } returns firstBatch
+        coEvery { getAlbumTracks(2L) } throws RuntimeException("network error")
+        val viewModel = AlbumViewModel(getAlbumTracks)
+
+        viewModel.loadAlbum(1L)
+        viewModel.loadAlbum(2L)
+
+        assertEquals(firstBatch, viewModel.uiState.value.tracks)
+        assertFalse(viewModel.uiState.value.isLoading)
+    }
 }

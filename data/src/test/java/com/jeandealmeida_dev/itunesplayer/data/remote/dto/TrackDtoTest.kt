@@ -25,6 +25,7 @@ class TrackDtoTest {
         assertEquals(1.29, track.trackPrice, 0.001)
         assertEquals("USD", track.currency)
         assertEquals(185_000L, track.durationMs)
+        assertEquals(4213L, track.collectionId)
     }
 
     @Test
@@ -42,6 +43,7 @@ class TrackDtoTest {
         assertEquals(0.0, track.trackPrice, 0.001)
         assertEquals("", track.currency)
         assertEquals(0L, track.durationMs)
+        assertEquals(0L, track.collectionId)
     }
 
     @Test

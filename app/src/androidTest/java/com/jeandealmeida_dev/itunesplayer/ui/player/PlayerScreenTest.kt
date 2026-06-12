@@ -25,10 +25,10 @@ class PlayerScreenTest {
         artist = "Queen",
     )
 
-    private fun launchScreen(onBack: () -> Unit = {}) {
+    private fun launchScreen(onBack: () -> Unit = {}, onAlbumClick: () -> Unit = {}) {
         composeTestRule.setContent {
             ItunesPlayerTheme {
-                PlayerScreen(track = testTrack, onBack = onBack)
+                PlayerScreen(track = testTrack, onBack = onBack, onAlbumClick = onAlbumClick)
             }
         }
     }
@@ -69,5 +69,49 @@ class PlayerScreenTest {
     fun WHEN_player_loads_THEN_more_options_button_is_shown() {
         launchScreen()
         composeTestRule.onNodeWithContentDescription("More options").assertIsDisplayed()
+    }
+
+    @Test
+    fun `GIVEN player is loaded THEN play button is visible`() {
+        launchScreen()
+        composeTestRule.onNodeWithContentDescription("Play").assertIsDisplayed()
+    }
+
+    @Test
+    fun `GIVEN player is loaded THEN repeat button is visible`() {
+        launchScreen()
+        composeTestRule.onNodeWithContentDescription("Repeat").assertIsDisplayed()
+    }
+
+    @Test
+    fun `GIVEN player is loaded WHEN more options is clicked THEN view album option is shown`() {
+        launchScreen()
+        composeTestRule.onNodeWithContentDescription("More options").performClick()
+        composeTestRule.onNodeWithText("View album").assertIsDisplayed()
+    }
+
+    @Test
+    fun `GIVEN action sheet is open WHEN view album is tapped THEN onAlbumClick callback is invoked`() {
+        var albumClicked = false
+        launchScreen(onAlbumClick = { albumClicked = true })
+        composeTestRule.onNodeWithContentDescription("More options").performClick()
+        composeTestRule.onNodeWithText("View album").performClick()
+        assertTrue(albumClicked)
+    }
+
+    @Test
+    fun `GIVEN player is loaded WHEN track title is tapped THEN onAlbumClick callback is invoked`() {
+        var albumClicked = false
+        launchScreen(onAlbumClick = { albumClicked = true })
+        composeTestRule.onNodeWithText("Bohemian Rhapsody").performClick()
+        assertTrue(albumClicked)
+    }
+
+    @Test
+    fun `GIVEN player is loaded WHEN artist name is tapped THEN onAlbumClick callback is invoked`() {
+        var albumClicked = false
+        launchScreen(onAlbumClick = { albumClicked = true })
+        composeTestRule.onNodeWithText("Queen").performClick()
+        assertTrue(albumClicked)
     }
 }

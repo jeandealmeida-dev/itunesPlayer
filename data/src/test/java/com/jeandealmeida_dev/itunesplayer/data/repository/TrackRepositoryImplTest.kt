@@ -10,7 +10,11 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
+import org.junit.Assert.fail
 import org.junit.Test
+
+
 
 class TrackRepositoryImplTest {
 
@@ -69,10 +73,80 @@ class TrackRepositoryImplTest {
 
         coVerify { service.lookup(id) }
     }
+
+    @Test
+    fun `GIVEN a search term WHEN search returns an empty list THEN returns empty list`() = runTest {
+        coEvery { service.search(any()) } returns SearchDto(emptyList(), 0)
+
+        val result = repository.search("jazz")
+
+        assertTrue(result.isEmpty())
+    }
+
+    @Test
+    fun `GIVEN service throws WHEN search is called THEN exception propagates to caller`() = runTest {
+        coEvery { service.search(any()) } throws RuntimeException("network error")
+
+        try {
+            repository.search("rock")
+            fail("Expected RuntimeException to propagate")
+        } catch (e: RuntimeException) {
+            assertEquals("network error", e.message)
+        }
+    }
+
+    @Test
+    fun `GIVEN a collection id WHEN getAlbumTracks is called THEN all tracks with non-null ids are returned`() = runTest {
+        val dtos = listOf(aTrackDto(id = 1L), aTrackDto(id = 2L), aTrackDto(id = 3L))
+        coEvery { service.lookup(100L) } returns SearchDto(dtos, 3)
+
+        val result = repository.getAlbumTracks(100L)
+
+        assertEquals(3, result.size)
+        coVerify(exactly = 1) { service.lookup(100L) }
+    }
+
+    @Test
+    fun `GIVEN lookup returns a dto with null id WHEN getAlbumTracks is called THEN that entry is filtered out`() = runTest {
+        // iTunes lookup returns the album record itself first — it has no trackId
+        val dtos = listOf(aTrackDto(id = null), aTrackDto(id = 1L), aTrackDto(id = 2L))
+        coEvery { service.lookup(any()) } returns SearchDto(dtos, 3)
+
+        val result = repository.getAlbumTracks(100L)
+
+        assertEquals(2, result.size)
+        assertEquals(listOf(1L, 2L), result.map { it.id })
+    }
+
+    @Test
+    fun `GIVEN lookup returns only null-id dtos WHEN getAlbumTracks is called THEN returns empty list`() = runTest {
+        coEvery { service.lookup(any()) } returns SearchDto(listOf(aTrackDto(id = null)), 1)
+
+        val result = repository.getAlbumTracks(100L)
+
+        assertTrue(result.isEmpty())
+    }
+
+    @Test
+    fun `GIVEN a collection id WHEN getAlbumTracks is called THEN delegates the id unmodified to service`() = runTest {
+        val collectionId = 55L
+        coEvery { service.lookup(collectionId) } returns SearchDto(emptyList(), 0)
+
+        repository.getAlbumTracks(collectionId)
+
+        coVerify { service.lookup(collectionId) }
+    }
+
+    @Test
+    fun `GIVEN a search term WHEN searchPaged is called THEN returns a non-null flow`() {
+        val flow = repository.searchPaged("electronic")
+
+        assertNotNull(flow)
+    }
 }
 
 private fun aTrackDto(
-    id: Long = 1L,
+    id: Long? = 1L,
     title: String = "Track Title",
     artist: String = "Artist",
     album: String = "Album",

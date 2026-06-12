@@ -57,4 +57,29 @@ class HomeViewModelTest {
 
         verify { getPagedTracks("Daft Punk") }
     }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `GIVEN a non-blank query WHEN tracks flow is collected THEN getPagedTracks is called with that query`() = runTest {
+        every { getPagedTracks(any()) } returns emptyFlow()
+        val viewModel = HomeViewModel(getPagedTracks)
+        viewModel.onQueryChange("queen")
+
+        val job = launch { viewModel.tracks.collect {} }
+        advanceUntilIdle()
+        job.cancel()
+
+        verify { getPagedTracks("queen") }
+    }
+
+    @Test
+    fun `GIVEN a non-blank query is set WHEN onQueryChange is called with empty string THEN query resets to empty`() = runTest {
+        every { getPagedTracks(any()) } returns emptyFlow()
+        val viewModel = HomeViewModel(getPagedTracks)
+        viewModel.onQueryChange("daft punk")
+
+        viewModel.onQueryChange("")
+
+        assertEquals("", viewModel.uiState.value.query)
+    }
 }

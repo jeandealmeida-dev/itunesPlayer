@@ -68,4 +68,32 @@ class PlayerViewModelTest {
 
         assertEquals(stateBefore, viewModel.uiState.value)
     }
+
+    @Test
+    fun `GIVEN no media player initialized WHEN seekTo is called with boundary value 1f THEN state does not change`() {
+        val stateBefore = viewModel.uiState.value
+
+        viewModel.seekTo(1f)
+
+        assertEquals(stateBefore, viewModel.uiState.value)
+    }
+
+    @Test
+    fun `GIVEN toggleRepeat is called three times WHEN isRepeat is observed THEN isRepeat is true`() {
+        viewModel.toggleRepeat()
+        viewModel.toggleRepeat()
+        viewModel.toggleRepeat()
+
+        assertTrue(viewModel.uiState.value.isRepeat)
+    }
+
+    @Test
+    fun `GIVEN toggleRepeat is called four times WHEN isRepeat is observed THEN isRepeat is false`() {
+        viewModel.toggleRepeat()
+        viewModel.toggleRepeat()
+        viewModel.toggleRepeat()
+        viewModel.toggleRepeat()
+
+        assertFalse(viewModel.uiState.value.isRepeat)
+    }
 }
