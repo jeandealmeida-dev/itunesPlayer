@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    jacoco
 }
 
 android {
@@ -19,6 +20,9 @@ android {
     }
 
     buildTypes {
+        debug {
+            enableUnitTestCoverage = true
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -39,10 +43,31 @@ android {
     }
 }
 
+afterEvaluate {
+    tasks.register<JacocoReport>("jacocoTestReport") {
+        dependsOn("testDebugUnitTest")
+        reports {
+            xml.required = true
+            html.required = false
+        }
+        val exclusions = listOf(
+            "**/R.class", "**/R\$*.class", "**/BuildConfig.*", "**/Manifest*.*",
+            "**/*Activity*.*", "**/*Application*.*", "**/*Screen.*"
+        )
+        classDirectories.setFrom(
+            fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debug") { exclude(exclusions) }
+        )
+        sourceDirectories.setFrom(files("src/main/java"))
+        executionData.setFrom(
+            layout.buildDirectory.file("outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec")
+        )
+    }
+}
+
 dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
-implementation(project(":auto"))
+    implementation(project(":auto"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.activity.compose)

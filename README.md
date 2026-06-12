@@ -92,6 +92,28 @@ itunesPlayer/
 
 ---
 
+## Test Coverage
+
+[![CI](https://github.com/jeandealmeida-dev/itunesPlayer/actions/workflows/ci.yml/badge.svg)](https://github.com/jeandealmeida-dev/itunesPlayer/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/jeandealmeida-dev/itunesPlayer/graph/badge.svg?token=CODECOV_TOKEN)](https://codecov.io/gh/jeandealmeida-dev/itunesPlayer)
+
+Coverage is measured with JaCoCo and uploaded to [Codecov](https://codecov.io/gh/jeandealmeida-dev/itunesPlayer) on every push to `main` and on every pull request. Badges update automatically — no manual edits needed.
+
+| Module | Coverage |
+|---|:-:|
+| `:domain` | [![domain](https://codecov.io/gh/jeandealmeida-dev/itunesPlayer/graph/badge.svg?token=CODECOV_TOKEN&flag=domain)](https://codecov.io/gh/jeandealmeida-dev/itunesPlayer) |
+| `:data` | [![data](https://codecov.io/gh/jeandealmeida-dev/itunesPlayer/graph/badge.svg?token=CODECOV_TOKEN&flag=data)](https://codecov.io/gh/jeandealmeida-dev/itunesPlayer) |
+| `:app` | [![app](https://codecov.io/gh/jeandealmeida-dev/itunesPlayer/graph/badge.svg?token=CODECOV_TOKEN&flag=app)](https://codecov.io/gh/jeandealmeida-dev/itunesPlayer) |
+
+> **Note on `:app`** — the module is mostly Jetpack Compose UI code. Only ViewModels are unit-tested; Composables require instrumented Compose UI tests (see backlog).
+
+Run coverage locally with:
+
+```bash
+./gradlew :domain:test :data:jacocoTestReport :app:jacocoTestReport
+# reports → <module>/build/reports/jacoco/
+```
+
 ## Getting Started
 
 1. Clone the repository.

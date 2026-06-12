@@ -1,5 +1,18 @@
 plugins {
     alias(libs.plugins.kotlin.jvm)
+    jacoco
+}
+
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    reports {
+        xml.required = true
+        html.required = false
+    }
 }
 
 java {

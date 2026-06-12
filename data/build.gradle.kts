@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    jacoco
 }
 
 android {
@@ -11,12 +12,36 @@ android {
         minSdk = 27
     }
 
+    buildTypes {
+        debug {
+            enableUnitTestCoverage = true
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
         jvmTarget = "11"
+    }
+}
+
+afterEvaluate {
+    tasks.register<JacocoReport>("jacocoTestReport") {
+        dependsOn("testDebugUnitTest")
+        reports {
+            xml.required = true
+            html.required = false
+        }
+        val exclusions = listOf("**/R.class", "**/R\$*.class", "**/BuildConfig.*", "**/Manifest*.*")
+        classDirectories.setFrom(
+            fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debug") { exclude(exclusions) }
+        )
+        sourceDirectories.setFrom(files("src/main/java"))
+        executionData.setFrom(
+            layout.buildDirectory.file("outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec")
+        )
     }
 }
 

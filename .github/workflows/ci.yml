@@ -23,8 +23,8 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Run unit tests
-        run: ./gradlew test --no-daemon
+      - name: Run unit tests with coverage
+        run: ./gradlew :domain:test :data:jacocoTestReport :app:jacocoTestReport --no-daemon
 
       - name: Build debug APK
         run: ./gradlew :app:assembleDebug --no-daemon
@@ -35,3 +35,27 @@ jobs:
         with:
           name: test-reports
           path: '**/build/reports/tests/'
+
+      - name: Upload :domain coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: domain/build/reports/jacoco/test/jacocoTestReport.xml
+          flags: domain
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
+
+      - name: Upload :data coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: data/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
+          flags: data
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
+
+      - name: Upload :app coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
+          flags: app
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
