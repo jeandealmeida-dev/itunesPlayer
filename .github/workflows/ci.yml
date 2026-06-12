@@ -37,25 +37,28 @@ jobs:
           path: '**/build/reports/tests/'
 
       - name: Upload :domain coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           files: domain/build/reports/jacoco/test/jacocoTestReport.xml
           flags: domain
+          slug: jeandealmeida-dev/itunesPlayer
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: false
 
       - name: Upload :data coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           files: data/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
           flags: data
+          slug: jeandealmeida-dev/itunesPlayer
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: false
 
       - name: Upload :app coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           files: app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
           flags: app
+          slug: jeandealmeida-dev/itunesPlayer
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: false
