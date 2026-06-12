@@ -34,7 +34,7 @@ afterEvaluate {
             xml.required = true
             html.required = false
         }
-        val exclusions = listOf("**/R.class", "**/R\$*.class", "**/BuildConfig.*", "**/Manifest*.*")
+        val exclusions = listOf("**/R.class", "**/R\$*.class", "**/BuildConfig.*", "**/Manifest*.*", "**/*Module.*")
         classDirectories.setFrom(
             fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debug") { exclude(exclusions) }
         )
