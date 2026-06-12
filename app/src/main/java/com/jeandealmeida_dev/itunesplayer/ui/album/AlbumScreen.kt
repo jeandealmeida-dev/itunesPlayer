@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -40,6 +39,7 @@ import coil.compose.AsyncImage
 import com.jeandealmeida_dev.itunesplayer.R
 import com.jeandealmeida_dev.itunesplayer.domain.model.Track
 import com.jeandealmeida_dev.itunesplayer.ui.components.TrackItem
+import com.jeandealmeida_dev.itunesplayer.ui.components.TrackListShimmer
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -83,22 +83,14 @@ fun AlbumScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues),
+                .padding(paddingValues)
+                .padding(horizontal = 20.dp),
         ) {
             item {
                 AlbumHeader(track = track)
             }
             if (uiState.isLoading) {
-                item {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(32.dp),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        CircularProgressIndicator(color = colors.onBackground)
-                    }
-                }
+                item { TrackListShimmer() }
             } else {
                 items(uiState.tracks) { albumTrack ->
                     TrackItem(
@@ -118,7 +110,6 @@ private fun AlbumHeader(track: Track) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp)
             .padding(top = 24.dp, bottom = 32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {

@@ -116,7 +116,7 @@ fun PlayerScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(horizontal = 24.dp),
+                .padding(horizontal = 20.dp),
         ) {
             Spacer(modifier = Modifier.weight(1f))
             Box(

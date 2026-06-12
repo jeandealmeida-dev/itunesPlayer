@@ -47,6 +47,8 @@ import com.jeandealmeida_dev.itunesplayer.R
 import com.jeandealmeida_dev.itunesplayer.domain.model.Track
 import com.jeandealmeida_dev.itunesplayer.ui.components.TrackActionSheet
 import com.jeandealmeida_dev.itunesplayer.ui.components.TrackItem
+import com.jeandealmeida_dev.itunesplayer.ui.components.TrackItemShimmer
+import com.jeandealmeida_dev.itunesplayer.ui.components.TrackListShimmer
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -86,6 +88,7 @@ fun HomeScreen(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = colors.background),
+                modifier = Modifier.padding(end = 20.dp)
             )
         },
     ) { paddingValues ->
@@ -93,7 +96,7 @@ fun HomeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(start = 20.dp),
+                .padding(horizontal = 20.dp),
         ) {
             if (isSearchVisible) {
                 Row(
@@ -118,9 +121,7 @@ fun HomeScreen(
                 }
             }
             if (tracks.loadState.refresh is LoadState.Loading) {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(color = colors.onBackground)
-                }
+                TrackListShimmer()
             } else {
                 LazyColumn {
                     items(count = tracks.itemCount) { index ->
@@ -133,16 +134,7 @@ fun HomeScreen(
                         )
                     }
                     if (tracks.loadState.append is LoadState.Loading) {
-                        item {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp),
-                                contentAlignment = Alignment.Center,
-                            ) {
-                                CircularProgressIndicator(color = colors.onBackground)
-                            }
-                        }
+                        item { TrackItemShimmer() }
                     }
                 }
             }
