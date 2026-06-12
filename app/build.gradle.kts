@@ -52,7 +52,7 @@ afterEvaluate {
         }
         val exclusions = listOf(
             "**/R.class", "**/R\$*.class", "**/BuildConfig.*", "**/Manifest*.*",
-            "**/*Activity*.*", "**/*Application*.*", "**/*Screen.*", "**/components/*", "**/theme/*"
+            "**/*Activity*.*", "**/*Application*.*", "**/*Screen*.*", "**/components/*", "**/theme/*"
         )
         classDirectories.setFrom(
             fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debug") { exclude(exclusions) }
