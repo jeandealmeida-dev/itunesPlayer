@@ -8,6 +8,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import com.jeandealmeida_dev.itunesplayer.auto.AutoServiceLocator
+import com.jeandealmeida_dev.itunesplayer.data.network.NetworkModule
+import com.jeandealmeida_dev.itunesplayer.data.repository.TrackRepositoryImpl
 import com.jeandealmeida_dev.itunesplayer.domain.model.Track
 import com.jeandealmeida_dev.itunesplayer.ui.album.AlbumScreen
 import com.jeandealmeida_dev.itunesplayer.ui.home.HomeScreen
@@ -24,6 +27,7 @@ private sealed class Screen {
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AutoServiceLocator.repository = TrackRepositoryImpl(NetworkModule.itunesService)
         setContent {
             ItunesPlayerTheme {
                 var showSplash by remember { mutableStateOf(true) }
