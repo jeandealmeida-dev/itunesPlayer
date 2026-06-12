@@ -18,15 +18,12 @@ The project is split into four Gradle modules with a strict one-way dependency g
 
 ```
 :app  ──►  :domain  ◄──  :data
- │                          
- └──►  :auto  ──►  :domain
 ```
 
 | Module | Role |
 |---|---|
 | `:domain` | Pure Kotlin JVM. Models, repository interfaces, and use cases. Zero Android imports. |
 | `:data` | Android library. Repository implementations, Retrofit/Moshi API client, Paging source. |
-| `:auto` | Android library + Compose. Android Auto screens and ViewModels. |
 | `:app` | Application entry point. Wires all modules, hosts all Compose screens. |
 
 ### Pattern
@@ -51,10 +48,6 @@ Composable  →  ViewModel  →  UseCase  →  TrackRepository (interface)
 - **Live search** — real-time paging search against the iTunes Search API; results update as you type.
 - **30-second preview player** — streams the iTunes preview URL via `MediaPlayer` with play/pause, seek slider, repeat, and elapsed/remaining time counters.
 - **Album view** — tap a track title/artist or "View album" from the action sheet to see every track on that album grouped together.
-- **Track action sheet** — bottom sheet on any ⋮ button shows song/artist and a "View album" shortcut.
-- **Shimmer loading** — animated skeleton placeholders replace spinners during both initial page load and paginated append loads.
-- **Android Auto** — dedicated `:auto` module exposes the music library to the car dashboard.
-
 ---
 
 ## Tech Stack
@@ -67,7 +60,6 @@ Composable  →  ViewModel  →  UseCase  →  TrackRepository (interface)
 | Networking | Retrofit 3 + Moshi |
 | Paging | Jetpack Paging 3 (`PagingSource`, `cachedIn`) |
 | Image loading | Coil |
-| Android Auto | `MediaBrowserServiceCompat` |
 | DI | Manual constructor injection (no Hilt/Dagger) |
 | Testing | JUnit 4, MockK, `kotlinx-coroutines-test`, Paging testing |
 | Min SDK | 27 (Android 8.1) |
@@ -92,12 +84,10 @@ itunesPlayer/
 │   ├── repository/        TrackRepository (interface)
 │   └── usecase/           GetTrackUseCase, SearchTracksUseCase,
 │                          GetPagedTracksUseCase, GetAlbumTracksUseCase
-├── data/
-│   ├── remote/            ItunesService, TrackDto, SearchDto
-│   ├── remote/paging/     TrackPagingSource
-│   └── repository/        TrackRepositoryImpl
-└── auto/
-    └── ui/home/           Auto HomeScreen + ViewModel
+└── data/
+    ├── remote/            ItunesService, TrackDto, SearchDto
+    ├── remote/paging/     TrackPagingSource
+    └── repository/        TrackRepositoryImpl
 ```
 
 ---
@@ -112,16 +102,16 @@ No API keys required — the iTunes Search API is open.
 
 ---
 
-## Future Backlog
+## Future Backlog (Ideas)
 
 ### Core player
+- [ ] Mini player.
 - [ ] Queue management — add tracks to an up-next queue, reorder and remove items.
 - [ ] Background playback — foreground `Service` + `MediaSession` so audio continues when the app is minimised.
 - [ ] Lock-screen / notification controls — standard media notification with play/pause/skip actions.
 - [ ] Crossfade between tracks.
 
 ### Discovery
-- [ ] Trending / editorial picks on the home feed (iTunes top charts endpoint).
 - [ ] Artist detail screen — tap an artist name to see all their available tracks.
 - [ ] Genre filter chips on the home screen.
 - [ ] Related tracks section at the bottom of the player screen.
@@ -134,12 +124,10 @@ No API keys required — the iTunes Search API is open.
 
 ### UX & polish
 - [ ] Animated now-playing bar pinned to the bottom of the home and album screens.
-- [ ] Artwork colour extraction (Palette API) to tint the player background dynamically.
 - [ ] Haptic feedback on play/pause.
 - [ ] Landscape / tablet adaptive layout.
+- [ ] Android Auto
 
 ### Infrastructure
-- [ ] Dependency injection with Hilt.
 - [ ] Crashlytics + analytics integration.
 - [ ] Screenshot and end-to-end tests with Compose test rules.
-- [ ] CI pipeline (GitHub Actions) with lint, unit tests, and APK build.
