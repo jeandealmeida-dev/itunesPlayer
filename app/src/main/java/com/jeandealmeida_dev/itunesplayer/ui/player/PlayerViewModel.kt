@@ -13,6 +13,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+fun interface MediaPlayerFactory {
+    fun create(): MediaPlayer
+}
+
 data class PlayerUiState(
     val track: Track? = null,
     val isPlaying: Boolean = false,
@@ -22,7 +26,9 @@ data class PlayerUiState(
     val isRepeat: Boolean = false,
 )
 
-class PlayerViewModel : ViewModel() {
+class PlayerViewModel(
+    private val mediaPlayerFactory: MediaPlayerFactory = MediaPlayerFactory { MediaPlayer() },
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PlayerUiState())
     val uiState: StateFlow<PlayerUiState> = _uiState.asStateFlow()
@@ -79,7 +85,7 @@ class PlayerViewModel : ViewModel() {
     }
 
     private fun preparePlayer(url: String, fallbackDurationMs: Long) {
-        mediaPlayer = MediaPlayer().apply {
+        mediaPlayer = mediaPlayerFactory.create().apply {
             setAudioAttributes(
                 AudioAttributes.Builder()
                     .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
