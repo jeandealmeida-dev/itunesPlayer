@@ -256,7 +256,7 @@ private fun PlayerProgressSlider(
             )
             Spacer(modifier = Modifier.weight(1f))
             Text(
-                text = "-${(durationMs - positionMs).coerceAtLeast(0L).toTimeLabel()}",
+                text = durationMs.toTimeLabel(),
                 style = MaterialTheme.typography.bodySmall,
                 color = TextCounter,
             )

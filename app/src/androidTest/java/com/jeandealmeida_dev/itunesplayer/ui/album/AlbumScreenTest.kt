@@ -2,6 +2,7 @@ package com.jeandealmeida_dev.itunesplayer.ui.album
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -54,41 +55,47 @@ class AlbumScreenTest {
         }
     }
 
+    // region Top bar
+
     @Test
-    fun `GIVEN an album track WHEN AlbumScreen loads THEN album name is shown in the top bar`() {
+    fun WHEN_AlbumScreen_loads_THEN_album_name_is_shown() {
         launchScreen()
-        composeTestRule.onNodeWithText("Abbey Road").assertIsDisplayed()
+        composeTestRule.onAllNodesWithText("Abbey Road")[0].assertIsDisplayed()
     }
 
     @Test
-    fun `GIVEN AlbumScreen is shown WHEN it loads THEN back button is visible`() {
+    fun WHEN_AlbumScreen_loads_THEN_back_button_is_visible() {
         launchScreen()
         composeTestRule.onNodeWithContentDescription("Back").assertIsDisplayed()
     }
 
     @Test
-    fun `GIVEN AlbumScreen is shown WHEN back button is clicked THEN onBack callback is invoked`() {
+    fun WHEN_back_button_is_clicked_THEN_onBack_is_invoked() {
         var backPressed = false
         launchScreen(onBack = { backPressed = true })
         composeTestRule.onNodeWithContentDescription("Back").performClick()
         assertTrue(backPressed)
     }
 
+    // endregion
+
+    // region Track list
+
     @Test
-    fun `GIVEN album tracks WHEN AlbumScreen loads THEN track titles are visible`() {
+    fun WHEN_AlbumScreen_loads_THEN_track_titles_are_visible() {
         launchScreen()
         composeTestRule.onNodeWithText("Come Together").assertIsDisplayed()
         composeTestRule.onNodeWithText("Something").assertIsDisplayed()
     }
 
     @Test
-    fun `GIVEN album tracks WHEN AlbumScreen loads THEN artist name is shown`() {
+    fun WHEN_AlbumScreen_loads_THEN_artist_name_is_shown() {
         launchScreen()
-        composeTestRule.onNodeWithText("The Beatles").assertIsDisplayed()
+        composeTestRule.onAllNodesWithText("The Beatles")[0].assertIsDisplayed()
     }
 
     @Test
-    fun `GIVEN album tracks WHEN a track row is clicked THEN onTrackClick callback is invoked`() {
+    fun WHEN_track_row_is_clicked_THEN_onTrackClick_is_invoked() {
         var clickedTrack: Track? = null
         launchScreen(onTrackClick = { clickedTrack = it })
         composeTestRule.onNodeWithText("Come Together").performClick()
@@ -96,8 +103,10 @@ class AlbumScreenTest {
     }
 
     @Test
-    fun `GIVEN no tracks WHEN AlbumScreen loads THEN track list is empty`() {
+    fun WHEN_no_tracks_loaded_THEN_track_list_is_empty() {
         launchScreen(tracks = emptyList())
         composeTestRule.onNodeWithText("Come Together").assertDoesNotExist()
     }
+
+    // endregion
 }

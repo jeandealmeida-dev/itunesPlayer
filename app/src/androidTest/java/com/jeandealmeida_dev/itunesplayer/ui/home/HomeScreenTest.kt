@@ -2,6 +2,8 @@ package com.jeandealmeida_dev.itunesplayer.ui.home
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
+import androidx.compose.ui.test.hasSetTextAction
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -48,11 +50,7 @@ class HomeScreenTest {
         }
     }
 
-    @Test
-    fun WHEN_screen_loads_THEN_songs_title_is_shown() {
-        launchScreen()
-        composeTestRule.onNodeWithText("Songs").assertIsDisplayed()
-    }
+    // region Search bar
 
     @Test
     fun WHEN_screen_loads_THEN_search_bar_is_hidden() {
@@ -72,6 +70,40 @@ class HomeScreenTest {
         launchScreen()
         composeTestRule.onNodeWithContentDescription("Search").performClick()
         composeTestRule.onNodeWithContentDescription("Search").assertIsNotDisplayed()
+    }
+
+    @Test
+    fun WHEN_user_types_in_search_THEN_input_is_reflected() {
+        launchScreen()
+        composeTestRule.onNodeWithContentDescription("Search").performClick()
+        composeTestRule.onNodeWithText("Search").performTextInput("Queen")
+        composeTestRule.onNode(hasSetTextAction() and hasText("Queen")).assertIsDisplayed()
+    }
+
+    @Test
+    fun WHEN_close_button_is_clicked_THEN_search_bar_is_hidden() {
+        launchScreen()
+        composeTestRule.onNodeWithContentDescription("Search").performClick()
+        composeTestRule.onNodeWithContentDescription("Close search").performClick()
+        composeTestRule.onNodeWithText("Search").assertIsNotDisplayed()
+    }
+
+    @Test
+    fun WHEN_close_button_is_clicked_THEN_search_icon_reappears() {
+        launchScreen()
+        composeTestRule.onNodeWithContentDescription("Search").performClick()
+        composeTestRule.onNodeWithContentDescription("Close search").performClick()
+        composeTestRule.onNodeWithContentDescription("Search").assertIsDisplayed()
+    }
+
+    // endregion
+
+    // region Track list
+
+    @Test
+    fun WHEN_screen_loads_THEN_songs_title_is_shown() {
+        launchScreen()
+        composeTestRule.onNodeWithText("Songs").assertIsDisplayed()
     }
 
     @Test
@@ -95,46 +127,26 @@ class HomeScreenTest {
     }
 
     @Test
-    fun WHEN_user_types_in_search_THEN_input_is_reflected() {
-        launchScreen()
-        composeTestRule.onNodeWithContentDescription("Search").performClick()
-        composeTestRule.onNodeWithText("Search").performTextInput("Queen")
-        composeTestRule.onNodeWithText("Queen").assertIsDisplayed()
-    }
-
-    @Test
-    fun `GIVEN search bar is open WHEN close button is clicked THEN search bar is hidden`() {
-        launchScreen()
-        composeTestRule.onNodeWithContentDescription("Search").performClick()
-        composeTestRule.onNodeWithContentDescription("Close search").performClick()
-        composeTestRule.onNodeWithText("Search").assertIsNotDisplayed()
-    }
-
-    @Test
-    fun `GIVEN search bar is open WHEN close button is clicked THEN search icon reappears`() {
-        launchScreen()
-        composeTestRule.onNodeWithContentDescription("Search").performClick()
-        composeTestRule.onNodeWithContentDescription("Close search").performClick()
-        composeTestRule.onNodeWithContentDescription("Search").assertIsDisplayed()
-    }
-
-    @Test
-    fun `GIVEN tracks are loaded WHEN a track row is clicked THEN onTrackClick callback is invoked`() {
+    fun WHEN_track_row_is_clicked_THEN_onTrackClick_is_invoked() {
         var clickedTrack: Track? = null
         launchScreen(onTrackClick = { clickedTrack = it })
         composeTestRule.onNodeWithText("Yesterday").performClick()
         assertNotNull(clickedTrack)
     }
 
+    // endregion
+
+    // region Track action sheet
+
     @Test
-    fun `GIVEN a single track WHEN more options is clicked THEN action sheet appears`() {
+    fun WHEN_more_options_is_clicked_THEN_action_sheet_appears() {
         launchScreen(trackList = listOf(tracks[0]))
         composeTestRule.onNodeWithContentDescription("More options").performClick()
         composeTestRule.onNodeWithText("View album").assertIsDisplayed()
     }
 
     @Test
-    fun `GIVEN action sheet is open WHEN view album is tapped THEN onViewAlbum callback is invoked`() {
+    fun WHEN_view_album_is_tapped_THEN_onViewAlbum_is_invoked() {
         var viewAlbumTrack: Track? = null
         launchScreen(
             trackList = listOf(tracks[0]),
@@ -144,4 +156,6 @@ class HomeScreenTest {
         composeTestRule.onNodeWithText("View album").performClick()
         assertNotNull(viewAlbumTrack)
     }
+
+    // endregion
 }

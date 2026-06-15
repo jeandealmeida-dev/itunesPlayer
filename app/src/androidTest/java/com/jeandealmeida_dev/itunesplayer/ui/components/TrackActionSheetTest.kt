@@ -40,25 +40,25 @@ class TrackActionSheetTest {
     }
 
     @Test
-    fun `GIVEN a track WHEN TrackActionSheet is shown THEN track title is visible`() {
+    fun WHEN_TrackActionSheet_is_shown_THEN_track_title_is_visible() {
         launchSheet()
         composeTestRule.onNodeWithText("Bohemian Rhapsody").assertIsDisplayed()
     }
 
     @Test
-    fun `GIVEN a track WHEN TrackActionSheet is shown THEN artist name is visible`() {
+    fun WHEN_TrackActionSheet_is_shown_THEN_artist_name_is_visible() {
         launchSheet()
         composeTestRule.onNodeWithText("Queen").assertIsDisplayed()
     }
 
     @Test
-    fun `GIVEN TrackActionSheet is shown THEN view album option is visible`() {
+    fun WHEN_TrackActionSheet_is_shown_THEN_view_album_option_is_visible() {
         launchSheet()
         composeTestRule.onNodeWithText("View album").assertIsDisplayed()
     }
 
     @Test
-    fun `GIVEN TrackActionSheet is shown WHEN view album is tapped THEN onViewAlbum callback is invoked`() {
+    fun WHEN_view_album_is_tapped_THEN_onViewAlbum_is_invoked() {
         var albumClicked = false
         launchSheet(onViewAlbum = { albumClicked = true })
         composeTestRule.onNodeWithText("View album").performClick()

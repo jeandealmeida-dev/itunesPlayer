@@ -22,7 +22,7 @@ class TrackItemTest {
     private val testTrack = aTrack(id = 1L, title = "Yesterday", artist = "The Beatles")
 
     @Test
-    fun `GIVEN a track WHEN TrackItem is displayed THEN title is visible`() {
+    fun WHEN_TrackItem_is_displayed_THEN_title_is_visible() {
         composeTestRule.setContent {
             ItunesPlayerTheme {
                 TrackItem(track = testTrack, showOptions = true, onClick = {})
@@ -32,7 +32,7 @@ class TrackItemTest {
     }
 
     @Test
-    fun `GIVEN a track WHEN TrackItem is displayed THEN artist name is visible`() {
+    fun WHEN_TrackItem_is_displayed_THEN_artist_name_is_visible() {
         composeTestRule.setContent {
             ItunesPlayerTheme {
                 TrackItem(track = testTrack, showOptions = true, onClick = {})
@@ -42,7 +42,7 @@ class TrackItemTest {
     }
 
     @Test
-    fun `GIVEN a track WHEN row is clicked THEN onClick callback is invoked`() {
+    fun WHEN_track_row_is_clicked_THEN_onClick_is_invoked() {
         var clicked = false
         composeTestRule.setContent {
             ItunesPlayerTheme {
@@ -54,7 +54,7 @@ class TrackItemTest {
     }
 
     @Test
-    fun `GIVEN showOptions is true WHEN TrackItem is displayed THEN more options button is visible`() {
+    fun WHEN_showOptions_is_true_THEN_more_options_button_is_visible() {
         composeTestRule.setContent {
             ItunesPlayerTheme {
                 TrackItem(track = testTrack, showOptions = true, onClick = {})
@@ -64,7 +64,7 @@ class TrackItemTest {
     }
 
     @Test
-    fun `GIVEN showOptions is false WHEN TrackItem is displayed THEN more options button does not exist`() {
+    fun WHEN_showOptions_is_false_THEN_more_options_button_does_not_exist() {
         composeTestRule.setContent {
             ItunesPlayerTheme {
                 TrackItem(track = testTrack, showOptions = false, onClick = {})
@@ -74,7 +74,7 @@ class TrackItemTest {
     }
 
     @Test
-    fun `GIVEN showOptions is true WHEN more options is clicked THEN onOptionsClick callback is invoked`() {
+    fun WHEN_more_options_is_clicked_THEN_onOptionsClick_is_invoked() {
         var optionsClicked = false
         composeTestRule.setContent {
             ItunesPlayerTheme {

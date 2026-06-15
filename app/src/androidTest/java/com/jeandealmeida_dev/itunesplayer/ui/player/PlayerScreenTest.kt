@@ -33,22 +33,12 @@ class PlayerScreenTest {
         }
     }
 
+    // region Top bar
+
     @Test
     fun WHEN_player_loads_THEN_now_playing_title_is_shown() {
         launchScreen()
         composeTestRule.onNodeWithText("Now playing").assertIsDisplayed()
-    }
-
-    @Test
-    fun WHEN_player_loads_THEN_track_title_is_shown() {
-        launchScreen()
-        composeTestRule.onNodeWithText("Bohemian Rhapsody").assertIsDisplayed()
-    }
-
-    @Test
-    fun WHEN_player_loads_THEN_artist_name_is_shown() {
-        launchScreen()
-        composeTestRule.onNodeWithText("Queen").assertIsDisplayed()
     }
 
     @Test
@@ -71,36 +61,24 @@ class PlayerScreenTest {
         composeTestRule.onNodeWithContentDescription("More options").assertIsDisplayed()
     }
 
+    // endregion
+
+    // region Track info
+
     @Test
-    fun `GIVEN player is loaded THEN play button is visible`() {
+    fun WHEN_player_loads_THEN_track_title_is_shown() {
         launchScreen()
-        composeTestRule.onNodeWithContentDescription("Play").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Bohemian Rhapsody").assertIsDisplayed()
     }
 
     @Test
-    fun `GIVEN player is loaded THEN repeat button is visible`() {
+    fun WHEN_player_loads_THEN_artist_name_is_shown() {
         launchScreen()
-        composeTestRule.onNodeWithContentDescription("Repeat").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Queen").assertIsDisplayed()
     }
 
     @Test
-    fun `GIVEN player is loaded WHEN more options is clicked THEN view album option is shown`() {
-        launchScreen()
-        composeTestRule.onNodeWithContentDescription("More options").performClick()
-        composeTestRule.onNodeWithText("View album").assertIsDisplayed()
-    }
-
-    @Test
-    fun `GIVEN action sheet is open WHEN view album is tapped THEN onAlbumClick callback is invoked`() {
-        var albumClicked = false
-        launchScreen(onAlbumClick = { albumClicked = true })
-        composeTestRule.onNodeWithContentDescription("More options").performClick()
-        composeTestRule.onNodeWithText("View album").performClick()
-        assertTrue(albumClicked)
-    }
-
-    @Test
-    fun `GIVEN player is loaded WHEN track title is tapped THEN onAlbumClick callback is invoked`() {
+    fun WHEN_track_title_is_tapped_THEN_onAlbumClick_is_invoked() {
         var albumClicked = false
         launchScreen(onAlbumClick = { albumClicked = true })
         composeTestRule.onNodeWithText("Bohemian Rhapsody").performClick()
@@ -108,10 +86,48 @@ class PlayerScreenTest {
     }
 
     @Test
-    fun `GIVEN player is loaded WHEN artist name is tapped THEN onAlbumClick callback is invoked`() {
+    fun WHEN_artist_name_is_tapped_THEN_onAlbumClick_is_invoked() {
         var albumClicked = false
         launchScreen(onAlbumClick = { albumClicked = true })
         composeTestRule.onNodeWithText("Queen").performClick()
         assertTrue(albumClicked)
     }
+
+    // endregion
+
+    // region Playback controls
+
+    @Test
+    fun WHEN_player_loads_THEN_play_button_is_visible() {
+        launchScreen()
+        composeTestRule.onNodeWithContentDescription("Play").assertIsDisplayed()
+    }
+
+    @Test
+    fun WHEN_player_loads_THEN_repeat_button_is_visible() {
+        launchScreen()
+        composeTestRule.onNodeWithContentDescription("Repeat").assertIsDisplayed()
+    }
+
+    // endregion
+
+    // region Track action sheet
+
+    @Test
+    fun WHEN_more_options_is_clicked_THEN_view_album_option_is_shown() {
+        launchScreen()
+        composeTestRule.onNodeWithContentDescription("More options").performClick()
+        composeTestRule.onNodeWithText("View album").assertIsDisplayed()
+    }
+
+    @Test
+    fun WHEN_view_album_is_tapped_THEN_onAlbumClick_is_invoked() {
+        var albumClicked = false
+        launchScreen(onAlbumClick = { albumClicked = true })
+        composeTestRule.onNodeWithContentDescription("More options").performClick()
+        composeTestRule.onNodeWithText("View album").performClick()
+        assertTrue(albumClicked)
+    }
+
+    // endregion
 }
