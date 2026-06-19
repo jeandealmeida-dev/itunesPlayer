@@ -121,14 +121,13 @@ fun PlayerScreen(
             Spacer(modifier = Modifier.weight(1f))
             Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
+                    .fillMaxWidth(),
                 contentAlignment = Alignment.Center,
             ) {
                 AsyncImage(
                     model = track.artworkUrl.replace("100x100", "600x600"),
                     contentDescription = null,
-                    contentScale = ContentScale.Crop,
+                    contentScale = ContentScale.Fit,
                     modifier = Modifier
                         .size(300.dp)
                         .clip(RoundedCornerShape(12.dp)),
