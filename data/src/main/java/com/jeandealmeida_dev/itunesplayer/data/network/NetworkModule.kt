@@ -15,10 +15,13 @@ object NetworkModule {
         .addLast(KotlinJsonAdapterFactory())
         .build()
 
-    val retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl(ItunesService.BASE_URL)
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
-        .build()
+    @Volatile
+    var itunesService: ItunesService = createService(ItunesService.BASE_URL)
 
-    val itunesService: ItunesService = retrofit.create(ItunesService::class.java)
+    fun createService(baseUrl: String): ItunesService =
+        Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .build()
+            .create(ItunesService::class.java)
 }
