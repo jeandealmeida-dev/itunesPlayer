@@ -10,7 +10,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.jeandealmeida_dev.itunesplayer.MainActivity
 import com.jeandealmeida_dev.itunesplayer.data.network.NetworkModule
 import com.jeandealmeida_dev.itunesplayer.data.remote.ItunesService
-import androidx.test.platform.app.InstrumentationRegistry
+import com.jeandealmeida_dev.itunesplayer.NevermindFixture
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -51,8 +51,7 @@ abstract class NavigationTestBase {
         @BeforeClass
         @JvmStatic
         fun setUpMockServer() {
-            val tracksJson = InstrumentationRegistry.getInstrumentation().context
-                .assets.open("nevermind.json").bufferedReader().readText()
+            val tracksJson = NevermindFixture.toItunesJson()
             mockWebServer = MockWebServer()
             mockWebServer.start()
             mockWebServer.dispatcher = object : Dispatcher() {

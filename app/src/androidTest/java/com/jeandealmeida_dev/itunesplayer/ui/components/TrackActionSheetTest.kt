@@ -5,8 +5,8 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.jeandealmeida_dev.itunesplayer.aTrack
-import com.jeandealmeida_dev.itunesplayer.ui.theme.ItunesPlayerTheme
+import com.jeandealmeida_dev.itunesplayer.NevermindFixture
+import com.jeandealmeida_dev.itunesplayer.setThemedContent
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -18,37 +18,29 @@ class TrackActionSheetTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private val testTrack = aTrack(
-        id = 1L,
-        title = "Bohemian Rhapsody",
-        artist = "Queen",
-    )
-
     private fun launchSheet(
         onViewAlbum: () -> Unit = {},
         onDismiss: () -> Unit = {},
     ) {
-        composeTestRule.setContent {
-            ItunesPlayerTheme {
-                TrackActionSheet(
-                    track = testTrack,
-                    onViewAlbum = onViewAlbum,
-                    onDismiss = onDismiss,
-                )
-            }
+        composeTestRule.setThemedContent {
+            TrackActionSheet(
+                track = NevermindFixture.smellsLikeTeenSpirit,
+                onViewAlbum = onViewAlbum,
+                onDismiss = onDismiss,
+            )
         }
     }
 
     @Test
     fun WHEN_TrackActionSheet_is_shown_THEN_track_title_is_visible() {
         launchSheet()
-        composeTestRule.onNodeWithText("Bohemian Rhapsody").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Smells Like Teen Spirit").assertIsDisplayed()
     }
 
     @Test
     fun WHEN_TrackActionSheet_is_shown_THEN_artist_name_is_visible() {
         launchSheet()
-        composeTestRule.onNodeWithText("Queen").assertIsDisplayed()
+        composeTestRule.onNodeWithText(NevermindFixture.ARTIST).assertIsDisplayed()
     }
 
     @Test

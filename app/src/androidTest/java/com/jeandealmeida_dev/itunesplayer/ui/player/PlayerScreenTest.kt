@@ -6,8 +6,8 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.jeandealmeida_dev.itunesplayer.aTrack
-import com.jeandealmeida_dev.itunesplayer.ui.theme.ItunesPlayerTheme
+import com.jeandealmeida_dev.itunesplayer.NevermindFixture
+import com.jeandealmeida_dev.itunesplayer.setThemedContent
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -19,17 +19,13 @@ class PlayerScreenTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private val testTrack = aTrack(
-        id = 1L,
-        title = "Bohemian Rhapsody",
-        artist = "Queen",
-    )
-
     private fun launchScreen(onBack: () -> Unit = {}, onAlbumClick: () -> Unit = {}) {
-        composeTestRule.setContent {
-            ItunesPlayerTheme {
-                PlayerScreen(track = testTrack, onBack = onBack, onAlbumClick = onAlbumClick)
-            }
+        composeTestRule.setThemedContent {
+            PlayerScreen(
+                track = NevermindFixture.smellsLikeTeenSpirit,
+                onBack = onBack,
+                onAlbumClick = onAlbumClick,
+            )
         }
     }
 
@@ -68,20 +64,20 @@ class PlayerScreenTest {
     @Test
     fun WHEN_player_loads_THEN_track_title_is_shown() {
         launchScreen()
-        composeTestRule.onNodeWithText("Bohemian Rhapsody").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Smells Like Teen Spirit").assertIsDisplayed()
     }
 
     @Test
     fun WHEN_player_loads_THEN_artist_name_is_shown() {
         launchScreen()
-        composeTestRule.onNodeWithText("Queen").assertIsDisplayed()
+        composeTestRule.onNodeWithText(NevermindFixture.ARTIST).assertIsDisplayed()
     }
 
     @Test
     fun WHEN_track_title_is_tapped_THEN_onAlbumClick_is_invoked() {
         var albumClicked = false
         launchScreen(onAlbumClick = { albumClicked = true })
-        composeTestRule.onNodeWithText("Bohemian Rhapsody").performClick()
+        composeTestRule.onNodeWithText("Smells Like Teen Spirit").performClick()
         assertTrue(albumClicked)
     }
 
@@ -89,7 +85,7 @@ class PlayerScreenTest {
     fun WHEN_artist_name_is_tapped_THEN_onAlbumClick_is_invoked() {
         var albumClicked = false
         launchScreen(onAlbumClick = { albumClicked = true })
-        composeTestRule.onNodeWithText("Queen").performClick()
+        composeTestRule.onNodeWithText(NevermindFixture.ARTIST).performClick()
         assertTrue(albumClicked)
     }
 
@@ -107,6 +103,32 @@ class PlayerScreenTest {
     fun WHEN_player_loads_THEN_repeat_button_is_visible() {
         launchScreen()
         composeTestRule.onNodeWithContentDescription("Repeat").assertIsDisplayed()
+    }
+
+    // endregion
+
+    // region Repeat
+
+    @Test
+    fun WHEN_player_loads_THEN_repeat_badge_is_not_shown() {
+        launchScreen()
+        composeTestRule.onNodeWithText("1").assertDoesNotExist()
+    }
+
+    @Test
+    fun WHEN_repeat_button_is_clicked_THEN_repeat_badge_appears() {
+        launchScreen()
+        composeTestRule.onNodeWithContentDescription("Repeat").performClick()
+        composeTestRule.onNodeWithText("1").assertIsDisplayed()
+    }
+
+    @Test
+    fun WHEN_repeat_is_active_and_button_is_clicked_again_THEN_repeat_badge_disappears() {
+        launchScreen()
+        composeTestRule.onNodeWithContentDescription("Repeat").performClick()
+        composeTestRule.onNodeWithText("1").assertIsDisplayed()
+        composeTestRule.onNodeWithContentDescription("Repeat").performClick()
+        composeTestRule.onNodeWithText("1").assertDoesNotExist()
     }
 
     // endregion
